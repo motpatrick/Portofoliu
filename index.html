@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofoliu Interior Design</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Source Serif 4 for a classic, readable look -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Source Serif 4', serif; /* Changed font to Source Serif 4 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: black;
+            color: white;
+            /* Nu mai ascundem overflow-ul pe body, lăsăm derularea nativă a paginii */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Bara de scroll personalizată (per-element, nu global) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+
+        /* Stiluri pentru secțiunea de antet (full-page la început) */
+        .header-section {
+            min-height: 100vh; /* Ocupă minim întreaga înălțime a viewport-ului, dar se poate extinde */
+            width: 100vw; /* Ocupă întreaga lățime a viewport-ului */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* justify-content: center; REMOVED to allow content to push down naturally */
+            padding: 2rem 1rem; /* Padding consistent pentru conținut */
+            box-sizing: border-box;
+            position: relative; /* Permite poziționarea pseudo-elementelor */
+            z-index: 1; /* Asigură că conținutul este deasupra pseudo-elementelor */
+            transition: opacity 0.3s ease-out; /* Tranziție pentru fade out/in */
+        }
+
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Imaginea de fundal pentru antet - se derulează cu conținutul */
+            background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=2830&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat; /* Asigură că nu se repetă */
+            filter: blur(8px); /* Efect de blur subtil */
+            background-color: rgba(0, 0, 0, 0.4); /* Suprapunere întunecată pentru lizibilitate */
+            z-index: -1; /* Plasează în spatele conținutului */
+        }
+
+        /* Stil pentru chenarul "Liquid Glass" */
+        .liquid-glass-box {
+            background-color: rgba(0, 0, 0, 0.4); /* Negru semi-transparent */
+            backdrop-filter: blur(10px); /* Cheia pentru efectul de sticlă lichidă */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Bordură albă subtilă */
+            border-radius: 0.75rem; /* Colțuri rotunjite */
+            padding: 1.5rem; /* Padding ajustat */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Umbră subtilă opțională */
+        }
+
+        /* Stiluri pentru cardul fiecărui proiect */
+        .project-card {
+            background-color: #1a1a1a; /* Fundal ușor mai închis pentru cardul proiectului */
+            border: 1px solid #333;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 4rem; /* Spațiu între proiecte */
+        }
+
+        /* Containerul principal al caruselului de imagini */
+        .project-carousel {
+            position: relative;
+            width: 100%;
+            height: 600px; /* Înălțime fixă pentru caruselul proiectului */
+            max-height: 80vh; /* Limită maximă pentru înălțimea caruselului */
+            overflow: hidden; /* Ascunde imaginile care nu sunt active */
+            border-radius: 0.5rem;
+            opacity: 1; /* Întotdeauna vizibil în cadrul cardului */
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        /* Containerul slide-ului intern */
+        .internal-slide-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+
+        .internal-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0; /* Implicit ascuns */
+            transition: none; /* Dezactivează tranziția implicită, folosim keyframes */
+        }
+
+        /* Animația principală: de jos-dreapta la centru */
+        @keyframes slideInBottomRight {
+            from {
+                transform: translate(50%, 50%) scale(0.8); /* Începe din jos-dreapta, puțin mai mic */
+                opacity: 0;
+            }
+            to {
+                transform: translate(0, 0) scale(1); /* Se termină în centru, dimensiune completă */
+                opacity: 1;
+            }
+        }
+
+        /* Animația de ieșire: fade out și mișcare ușoară */
+        @keyframes fadeOutAndMove {
+            from {
+                opacity: 1;
+                transform: translate(0, 0); /* Rămâne pe loc inițial */
+            }
+            to {
+                opacity: 0;
+                transform: translate(-10%, -10%); /* Se mișcă ușor în afara vizualizării */
+            }
+        }
+
+        .internal-slide.animate-in {
+            animation: slideInBottomRight 0.8s ease-out forwards;
+        }
+
+        .internal-slide.animate-out {
+            animation: fadeOutAndMove 0.8s ease-out forwards;
+        }
+
+        /* Asigură că slide-ul activ este vizibil după animație */
+        .internal-slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Asigură că imaginea umple complet containerul, tăind dacă este necesar */
+            border-radius: 0.5rem;
+        }
+
+        .image-overlay-text {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .more-info-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 0.5rem;
+            z-index: 2;
+        }
+        .more-info-overlay button {
+            background-color: white;
+            color: black;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: bold;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: 2px solid white;
+        }
+        .more-info-overlay button:hover {
+            background-color: #eee;
+            transform: scale(1.05);
+        }
+
+        /* Stiluri generale pentru modal (pentru încărcare și mai multe detalii) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: black;
+            border: 1px solid white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.open .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 0.25rem;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: white;
+        }
+
+        .button-primary {
+            background-color: white;
+            color: black;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+            border: 1px solid white;
+        }
+
+        .button-primary:hover {
+            background-color: #333;
+            color: white;
+            transform: scale(1.02);
+        }
+
+        .button-secondary {
+            background-color: black;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+            border: 1px solid white;
+        }
+
+        .button-secondary:hover {
+            background-color: white;
+            color: black;
+            transform: scale(1.02);
+        }
+
+        .message-box {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background-color: #333;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .message-box.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Stiluri specifice pentru caruselul modalului "Mai multe detalii" */
+        .detailed-carousel {
+            position: relative;
+            width: 100%;
+            height: 70vh; /* Ocupă o parte mai mare din înălțimea modalului */
+            overflow: hidden;
+            border-radius: 0.5rem;
+            background-color: #000;
+            border: 1px solid #333;
+            margin-bottom: 1rem;
+        }
+
+        .detailed-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .detailed-slide {
+            min-width: 100%;
+            flex-shrink: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+        }
+        .detailed-slide.active {
+            opacity: 1;
+        }
+        .detailed-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Asigură că imaginea umple complet containerul */
+            border-radius: 0.5rem;
+        }
+
+        /* Animatii noi pentru butoanele caruselului detaliat */
+        @keyframes buttonSlideOutLeftFadeOut {
+            from { transform: translateX(-50%) translateY(-50%); opacity: 1; }
+            to { transform: translateX(-150%) translateY(-50%); opacity: 0; }
+        }
+
+        @keyframes buttonSlideOutRightFadeOut {
+            from { transform: translateX(0) translateY(-50%); opacity: 1; }
+            to { transform: translateX(100%) translateY(-50%); opacity: 0; }
+        }
+
+        @keyframes buttonFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .detailed-carousel .carousel-button {
+            /* Updated styling for detailed carousel buttons - minimalist */
+            background-color: transparent; /* Transparent background */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+            color: white;
+            font-size: 2rem;
+            font-weight: 700; /* Made bolder */
+            line-height: 1;
+            padding: 0.6rem 1.2rem; /* Increased padding */
+            border-radius: 9999px;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .detailed-carousel .carousel-button:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Subtle background on hover */
+            border-color: rgba(255, 255, 255, 0.6); /* Clearer border on hover */
+        }
+        .detailed-carousel .carousel-button-prev { left: 1rem; }
+        .detailed-carousel .carousel-button-next { right: 1rem; }
+
+        /* Stiluri pentru butoanele de navigare ale caruselurilor de proiecte */
+        .project-carousel .carousel-button {
+            /* Updated styling for project carousel buttons - minimalist */
+            background-color: transparent; /* Transparent background */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+            color: white;
+            font-size: 2rem;
+            font-weight: 700; /* Made bolder */
+            line-height: 1;
+            padding: 0.6rem 1.2rem; /* Increased padding */
+            border-radius: 9999px;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for hover */
+        }
+        .project-carousel .carousel-button:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Subtle background on hover */
+            border-color: rgba(255, 255, 255, 0.6); /* Clearer border on hover */
+        }
+        .project-carousel .carousel-button-prev { left: 1rem; }
+        .project-carousel .carousel-button-next { right: 1rem; }
+
+
+        /* Stiluri pentru descrierea colapsabilă */
+        .collapsible-description {
+            max-height: 4.5em; /* Aproximativ 3 rânduri pentru text-base cu line-height implicit */
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+            position: relative; /* Pentru gradientul de estompare */
+        }
+
+        .collapsible-description.expanded {
+            max-height: none; /* Extinde la înălțime completă */
+        }
+
+        .collapsible-description-fade {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3em; /* Înălțimea efectului de estompare */
+            background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+            pointer-events: none; /* Permite click-urilor să treacă prin el */
+            transition: opacity 0.5s ease-in-out;
+        }
+        .collapsible-description.expanded .collapsible-description-fade {
+            opacity: 0; /* Ascunde estomparea când este extins */
+        }
+
+
+        /* Media queries pentru responsive design */
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 1rem;
+            }
+            /* Adjust padding-top for the header content on mobile to ensure it's visible */
+            .header-section > div {
+                padding-top: 4rem; /* More space from top on mobile */
+            }
+
+            .project-carousel {
+                height: 400px; /* Înălțime fixă pentru carusel pe mobil */
+            }
+            .image-overlay-text {
+                font-size: 1.2rem;
+                padding: 0.5rem 1rem;
+            }
+            .more-info-overlay button {
+                font-size: 1rem;
+                padding: 0.75rem 1.5rem;
+            }
+            .modal-content {
+                padding: 1.5rem;
+            }
+             .liquid-glass-box {
+                padding: 1rem; /* Ajustează padding-ul pe mobil */
+            }
+            .project-card {
+                padding: 1rem;
+                margin-bottom: 2rem; /* Spațiu mai mic între proiecte pe mobil */
+            }
+
+            /* Smaller navigation arrows for project carousels on mobile */
+            .project-carousel .carousel-button {
+                font-size: 1.5rem;
+                padding: 0.3rem 0.7rem;
+            }
+
+            /* Condensed text for expanded description on mobile */
+            .collapsible-description.expanded p {
+                font-size: 0.95rem; /* Slightly smaller font */
+                line-height: 1.4; /* Tighter line spacing */
+                padding-bottom: 0.5rem; /* Reduce padding at the bottom */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Wrapper-ul principal care va fi derulat pentru a schimba secțiunile de pagină -->
+    <div id="fullPageWrapper" class="w-full">
+
+        <!-- Secțiunea 0: Antet și Descriere -->
+        <div id="headerSection" class="header-section">
+            <div class="max-w-4xl flex flex-col items-center justify-center text-center relative z-10 pt-20 md:pt-0">
+                <h1 class="text-5xl font-bold mb-2">Portofoliu Design Interior</h1>
+                <p class="text-lg text-gray-400 font-semibold">Mot Patrick</p>
+                <div class="liquid-glass-box mt-4 max-w-2xl mx-auto text-justify py-6">
+                    <div id="mainDescriptionContainer" class="collapsible-description">
+                        <p class="text-base text-gray-300">
+                            Mă specializez în crearea de spații unice și funcționale, adaptate nevoilor și dorințelor fiecărui client. Ofer soluții complete de design interior pentru proiecte rezidențiale, comerciale și de birouri, cu un accent deosebit pe estetică și confort.
+                            <br><br>
+                            - Consultanță și planificare personalizată: Începem fiecare proiect prin înțelegerea viziunii și a nevoilor tale, pentru a crea un design care reflectă stilul tău unic și îmbunătățește funcționalitatea spațiului.
+                            <br>
+                            - Design interior rezidențial și comercial: Fie că este vorba despre renovarea unui apartament, amenajarea unei case, sau crearea unui spațiu de birou inspirat, pun la dispoziție soluții creative și eficiente.
+                            <br>
+                            - Amenajări interioare complete: De la alegerea materialelor, culorilor și mobilierului, până la implementarea detaliilor finale, mă asigur că fiecare element este perfect integrat.
+                            <br>
+                            - Proiecte 3D și vizualizări fotorealiste: Ofer imagini detaliate ale proiectului înainte de implementare, pentru ca tu să poți vizualiza și ajusta designul conform preferințelor tale.
+                            <br><br>
+                            Indiferent de dimensiunea sau complexitatea proiectului, scopul meu este să transform orice spațiu într-un loc care inspiră și îmbunătățește calitatea vieții. Fiecare proiect este tratat cu atenție și profesionalism, asigurându-mă că rezultatul final depășește așteptările tale.
+                        </p>
+                        <div class="collapsible-description-fade"></div>
+                    </div>
+                    <button id="toggleDescriptionBtn" class="button-secondary liquid-glass-box mt-4 px-6 py-3 mx-auto block">
+                        Citește mai mult
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Container pentru toate Proiectele (nu mai este o secțiune full-page) -->
+        <div id="allProjectsContainer" class="w-full py-16 px-4 md:px-8 lg:px-16">
+            <!-- Fiecare proiect va fi încărcat dinamic aici -->
+        </div>
+
+    </div>
+
+    <!-- Modal încărcare proiect (în afara wrapper-ului de scroll) -->
+    <div id="uploadModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="text-2xl font-bold text-center">Adaugă Proiect Nou</h3>
+            <p class="text-gray-400 text-sm text-center mb-4">
+                Pentru această previzualizare, imaginile de la URL-uri vor fi utilizate pentru primele 3 slide-uri. Al 4-lea slide și "Mai multe detalii" vor utiliza imagini placeholder.
+                <br>Pentru fișierele încărcate, doar numele lor este folosit pentru a genera un placeholder.
+            </p>
+
+            <label for="projectTitleInput" class="block text-lg font-medium text-white">Titlul Proiectului:</label>
+            <input type="text" id="projectTitleInput" placeholder="ex: Living Modern" class="input-field">
+
+            <label for="projectDescriptionInput" class="block text-lg font-medium text-white">Descrierea Proiectului:</label>
+            <textarea id="projectDescriptionInput" rows="3" placeholder="ex: Un design minimalist cu lumină naturală și linii curate." class="input-field"></textarea>
+
+            <label for="slide1ImageUrl" class="block text-lg font-medium text-white">URL Imagine Slide 1:</label>
+            <input type="text" id="slide1ImageUrl" placeholder="https://placehold.co/800x1200/333/FFF?text=Vertical+Slide+1" class="input-field">
+
+            <label for="slide2ImageUrl" class="block text-lg font-medium text-white">URL Imagine Slide 2:</label>
+            <input type="text" id="slide2ImageUrl" placeholder="https://placehold.co/800x1200/555/FFF?text=Vertical+Slide+2" class="input-field">
+
+            <label for="slide3ImageUrl" class="block text-lg font-medium text-white">URL Imagine Slide 3 (Cu text):</label>
+            <input type="text" id="slide3ImageUrl" placeholder="https://placehold.co/800x1200/777/FFF?text=Vertical+Slide+3" class="input-field">
+            <label for="slide3OverlayText" class="block text-sm font-medium text-gray-300 mt-1">Text pentru Slide 3:</label>
+            <input type="text" id="slide3OverlayText" placeholder="ex: Detalii Elegante" class="input-field">
+
+            <label for="detailedPhotoUrls" class="block text-lg font-medium text-white">URL-uri Fotografii Detaliate (separate prin virgulă):</label>
+            <textarea id="detailedPhotoUrls" rows="2" placeholder="ex: url1, url2, url3" class="input-field"></textarea>
+            <p class="text-gray-400 text-xs mt-1">Acestea vor apărea în galeria "Mai multe despre acest proiect".</p>
+
+            <div class="flex justify-end gap-4 mt-4">
+                <button id="cancelUploadBtn" class="button-secondary">Anulează</button>
+                <button id="saveProjectBtn" class="button-primary">Salvează Proiectul</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Mai multe Detalii (Galerie completă proiect) -->
+    <div id="moreDetailsModal" class="modal-overlay">
+        <div class="modal-content !max-w-4xl">
+            <h3 id="moreDetailsTitle" class="text-2xl font-bold text-center mb-4"></h3>
+
+            <div class="detailed-carousel">
+                <div id="detailedTrack" class="detailed-track">
+                    <!-- Fotografiile detaliate vor fi încărcate aici -->
+                </div>
+                <button id="prevDetailedBtn" class="carousel-button carousel-button-prev">&#8249;</button>
+                <button id="nextDetailedBtn" class="carousel-button carousel-button-next">&#8250;</button>
+            </div>
+
+            <div class="flex justify-end mt-4">
+                <button id="closeDetailedModalBtn" class="button-primary">Închide</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Casetă mesaj personalizată -->
+    <div id="messageBox" class="message-box"></div>
+
+    <script>
+        // Date inițiale ale proiectelor cu slide-uri interne și fotografii detaliate
+        const projects = [
+            {
+                title: "Proiect #1 – Living și bucătărie",
+                description: `🎨 Stil: Modern, Clasic
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Concept design + Randări 3D + Selecție mobilier + Paletă cromatică + Strategie spațială + Planuri tehnice instalații electrice`,
+                internalSlides: [
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/333333/FFFFFF?text=Proiect+1+-+Slide+1" },
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/555555/FFFFFF?text=Proiect+1+-+Slide+2" },
+                    { type: "image-with-text", imageUrl: "https://placehold.co/800x1200/777777/FFFFFF?text=Proiect+1+-+Slide+3", overlayText: "Living și Bucătărie" },
+                    { type: "more-info", imageUrl: "https://placehold.co/800x1200/999999/FFFFFF?text=Mai+Multe+Detalii+Proiect+1" }
+                ],
+                allDetailedPhotos: [
+                    "https://placehold.co/800x1200/000000/FFFFFF?text=Proiect+1+Detalii+1",
+                    "https://placehold.co/800x1200/111111/FFFFFF?text=Proiect+1+Detalii+2",
+                    "https://placehold.co/800x1200/222222/FFFFFF?text=Proiect+1+Detalii+3"
+                ],
+                currentInternalSlideIndex: 0
+            },
+            {
+                title: "Proiect #2 – Bucatarie, Dining și Living clasic",
+                description: `🎨 Stil: Clasic american
+🛋️ Destinație: Rezidențial – casă nouă
+🛠️ Servicii oferite: Randări 3D + Concept design + Selecție mobilier + Paletă cromatică + Strategie spațială + Planuri tehnice instalații electrice`,
+                internalSlides: [
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/A0A0A0/000000?text=Proiect+2+-+Slide+1" },
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/B0B0B0/000000?text=Proiect+2+-+Slide+2" },
+                    { type: "image-with-text", imageUrl: "https://placehold.co/800x1200/C0C0C0/000000?text=Proiect+2+-+Slide+3", overlayText: "Clasic American" },
+                    { type: "more-info", imageUrl: "https://placehold.co/800x1200/D0D0D0/000000?text=Mai+Multe+Detalii+Proiect+2" }
+                ],
+                allDetailedPhotos: [
+                    "https://placehold.co/800x1200/444444/FFFFFF?text=Proiect+2+Detalii+1",
+                    "https://placehold.co/800x1200/555555/FFFFFF?text=Proiect+2+Detalii+2",
+                    "https://placehold.co/800x1200/666666/FFFFFF?text=Proiect+2+Detalii+3"
+                ],
+                currentInternalSlideIndex: 0
+            },
+            {
+                title: "Proiect #3 – Apartament Modern",
+                description: `📐 Suprafață: 48m²
+🎨 Stil: Modern
+🛋️ Destinație: Rezidențial – apartament complet
+🛠️ Servicii oferite: Design complet + Randări 3D + Selecție mobilier + Paletă cromatică + Strategie spațială + Planuri tehnice instalații electrice și sanitare`,
+                internalSlides: [
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/101010/FFFFFF?text=Proiect+3+-+Slide+1" },
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/202020/FFFFFF?text=Proiect+3+-+Slide+2" },
+                    { type: "image-with-text", imageUrl: "https://placehold.co/800x1200/303030/FFFFFF?text=Proiect+3+-+Slide+3", overlayText: "Apartament 48m²" },
+                    { type: "more-info", imageUrl: "https://placehold.co/800x1200/404040/FFFFFF?text=Mai+Multe+Detalii+Proiect+3" }
+                ],
+                allDetailedPhotos: [
+                    "https://placehold.co/800x1200/777777/000000?text=Proiect+3+Detalii+1",
+                    "https://placehold.co/800x1200/888888/000000?text=Proiect+3+Detalii+2",
+                    "https://placehold.co/800x1200/999999/000000?text=Proiect+3+Detalii+3"
+                ],
+                currentInternalSlideIndex: 0
+            },
+            {
+                title: "Proiect #4 Warm Minimalist House",
+                description: `🎨 Stil: Minimalist Cald
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Design complet + Randări 3D + Selecție mobilier + Paletă cromatică + Strategie spațială`,
+                internalSlides: [
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/E0E0E0/333333?text=Proiect+4+-+Slide+1" },
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/F0F0F0/333333?text=Proiect+4+-+Slide+2" },
+                    { type: "image-with-text", imageUrl: "https://placehold.co/800x1200/D0D0D0/333333?text=Proiect+4+-+Slide+3", overlayText: "Minimalism Cald" },
+                    { type: "more-info", imageUrl: "https://placehold.co/800x1200/C0C0C0/333333?text=Mai+Multe+Detalii+Proiect+4" }
+                ],
+                allDetailedPhotos: [
+                    "https://placehold.co/800x1200/AAAAAA/FFFFFF?text=Proiect+4+Detalii+1",
+                    "https://placehold.co/800x1200/BBBBBB/FFFFFF?text=Proiect+4+Detalii+2"
+                ],
+                currentInternalSlideIndex: 0
+            },
+            {
+                title: "Proiect #5",
+                description: `🎨 Stil: Contemporan
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Design complet + Randări 3D + Selecție mobilier + Paletă cromatică + Strategie spațială + Planuri tehnice instalații electrice și sanitare`,
+                internalSlides: [
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/666666/FFFFFF?text=Proiect+5+-+Slide+1" },
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/777777/FFFFFF?text=Proiect+5+-+Slide+2" },
+                    { type: "image-with-text", imageUrl: "https://placehold.co/800x1200/888888/FFFFFF?text=Proiect+5+-+Slide+3", overlayText: "Design Contemporan" },
+                    { type: "more-info", imageUrl: "https://placehold.co/800x1200/999999/FFFFFF?text=Mai+Multe+Detalii+Proiect+5" }
+                ],
+                allDetailedPhotos: [
+                    "https://placehold.co/800x1200/CCCCCC/000000?text=Proiect+5+Detalii+1",
+                    "https://placehold.co/800x1200/DDDDDD/000000?text=Proiect+5+Detalii+2",
+                    "https://placehold.co/800x1200/EEEEEE/000000?text=Proiect+5+Detalii+3"
+                ],
+                currentInternalSlideIndex: 0
+            },
+            {
+                title: "Proiect #6 – Terasă Modernă",
+                description: `🎨 Stil: Modern
+🛋️ Destinație: Terasă vilă vacanță
+🛠️ Servicii oferite: Design + Strategie spațială + Randări 3D`,
+                internalSlides: [
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/333333/FFFFFF?text=Proiect+6+-+Slide+1" },
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/555555/FFFFFF?text=Proiect+6+-+Slide+2" },
+                    { type: "image-with-text", imageUrl: "https://placehold.co/800x1200/777777/FFFFFF?text=Proiect+6+-+Slide+3", overlayText: "Terasă Relaxantă" },
+                    { type: "more-info", imageUrl: "https://placehold.co/800x1200/999999/FFFFFF?text=Mai+Multe+Detalii+Proiect+6" }
+                ],
+                allDetailedPhotos: [
+                    "https://placehold.co/800x1200/000000/FFFFFF?text=Proiect+6+Detalii+1",
+                    "https://placehold.co/800x1200/111111/FFFFFF?text=Proiect+6+Detalii+2"
+                ],
+                currentInternalSlideIndex: 0
+            },
+            {
+                title: "Proiect #7 - Baie Matrimoniala",
+                description: `🎨 Stil: Modern, Clasic
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Pachet Complet de Design Interior`,
+                internalSlides: [
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/A0A0A0/000000?text=Proiect+7+-+Slide+1" },
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/B0B0B0/000000?text=Proiect+7+-+Slide+2" },
+                    { type: "image-with-text", imageUrl: "https://placehold.co/800x1200/C0C0C0/000000?text=Proiect+7+-+Slide+3", overlayText: "Baie Modern-Clasic" },
+                    { type: "more-info", imageUrl: "https://placehold.co/800x1200/D0D0D0/000000?text=Mai+Multe+Detalii+Proiect+7" }
+                ],
+                allDetailedPhotos: [
+                    "https://placehold.co/800x1200/444444/FFFFFF?text=Proiect+7+Detalii+1",
+                    "https://placehold.co/800x1200/555555/FFFFFF?text=Proiect+7+Detalii+2"
+                ],
+                currentInternalSlideIndex: 0
+            },
+            {
+                title: "Proiect #8 - Dressing",
+                description: `🎨 Stil: Modern, Clasic
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Pachet Complet de Design Interior`,
+                internalSlides: [
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/101010/FFFFFF?text=Proiect+8+-+Slide+1" },
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/202020/FFFFFF?text=Proiect+8+-+Slide+2" },
+                    { type: "image-with-text", imageUrl: "https://placehold.co/800x1200/303030/FFFFFF?text=Proiect+8+-+Slide+3", overlayText: "Dressing Elegant" },
+                    { type: "more-info", imageUrl: "https://placehold.co/800x1200/404040/FFFFFF?text=Mai+Multe+Detalii+Proiect+8" }
+                ],
+                allDetailedPhotos: [
+                    "https://placehold.co/800x1200/777777/000000?text=Proiect+8+Detalii+1",
+                    "https://placehold.co/800x1200/888888/000000?text=Proiect+8+Detalii+2"
+                ],
+                currentInternalSlideIndex: 0
+            },
+            {
+                title: "Proiect #9 - Baie Clasică Masculină",
+                description: `🎨 Stil: Modern, Clasic
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Pachet Complet de Design Interior`,
+                internalSlides: [
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/E0E0E0/333333?text=Proiect+9+-+Slide+1" },
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/F0F0F0/333333?text=Proiect+9+-+Slide+2" },
+                    { type: "image-with-text", imageUrl: "https://placehold.co/800x1200/D0D0D0/333333?text=Proiect+9+-+Slide+3", overlayText: "Baie Masculină" },
+                    { type: "more-info", imageUrl: "https://placehold.co/800x1200/C0C0C0/333333?text=Mai+Multe+Detalii+Proiect+9" }
+                ],
+                allDetailedPhotos: [
+                    "https://placehold.co/800x1200/AAAAAA/FFFFFF?text=Proiect+9+Detalii+1",
+                    "https://placehold.co/800x1200/BBBBBB/FFFFFF?text=Proiect+9+Detalii+2"
+                ],
+                currentInternalSlideIndex: 0
+            },
+            {
+                title: "Proiect #10 - Dormitor Masculin",
+                description: `🎨 Stil: Clasic cu influente japoneze
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Pachet Complet de Design Interior`,
+                internalSlides: [
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/666666/FFFFFF?text=Proiect+10+-+Slide+1" },
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/777777/FFFFFF?text=Proiect+10+-+Slide+2" },
+                    { type: "image-with-text", imageUrl: "https://placehold.co/800x1200/888888/FFFFFF?text=Proiect+10+-+Slide+3", overlayText: "Dormitor Japonez" },
+                    { type: "more-info", imageUrl: "https://placehold.co/800x1200/999999/FFFFFF?text=Mai+Multe+Detalii+Proiect+10" }
+                ],
+                allDetailedPhotos: [
+                    "https://placehold.co/800x1200/CCCCCC/000000?text=Proiect+10+Detalii+1",
+                    "https://placehold.co/800x1200/DDDDDD/000000?text=Proiect+10+Detalii+2"
+                ],
+                currentInternalSlideIndex: 0
+            },
+            {
+                title: "Proiect #11 - Baie cu Contrast Nobil",
+                description: `🎨 Stil: Contemporan
+🛋️ Destinație: Rezidențial – apartament complet
+🛠️ Servicii oferite: Pachet Complet de Design Interior`,
+                internalSlides: [
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/333333/FFFFFF?text=Proiect+11+-+Slide+1" },
+                    { type: "image", imageUrl: "https://placehold.co/800x1200/555555/FFFFFF?text=Proiect+11+-+Slide+2" },
+                    { type: "image-with-text", imageUrl: "https://placehold.co/800x1200/777777/FFFFFF?text=Proiect+11+-+Slide+3", overlayText: "Baie Nobilă" },
+                    { type: "more-info", imageUrl: "https://placehold.co/800x1200/999999/FFFFFF?text=Mai+Multe+Detalii+Proiect+11" }
+                ],
+                allDetailedPhotos: [
+                    "https://placehold.co/800x1200/000000/FFFFFF?text=Proiect+11+Detalii+1",
+                    "https://placehold.co/800x1200/111111/FFFFFF?text=Proiect+11+Detalii+2"
+                ],
+                currentInternalSlideIndex: 0
+            }
+        ];
+
+        // Variabile globale pentru starea aplicației
+        let currentDetailedSlideIndex = 0; // Pentru caruselul modalului "Mai multe detalii"
+        let isDescriptionExpanded = false; // Pentru descrierea colapsabilă din antet
+
+        // Elemente DOM
+        const fullPageWrapper = document.getElementById('fullPageWrapper');
+        const headerSection = document.getElementById('headerSection');
+        const allProjectsContainer = document.getElementById('allProjectsContainer'); // Containerul pentru toate cardurile de proiect
+
+        // Modaluri și elemente aferente (păstrate pentru funcționalitatea de adăugare, chiar dacă butonul e eliminat)
+        const uploadModal = document.getElementById('uploadModal');
+        const cancelUploadBtn = document.getElementById('cancelUploadBtn');
+        const saveProjectBtn = document.getElementById('saveProjectBtn');
+
+        // Inputuri formular de încărcare (păstrate pentru funcționalitatea "Adaugă Proiect Nou" dacă ar fi reactivată)
+        const projectTitleInput = document.getElementById('projectTitleInput');
+        const projectDescriptionInput = document.getElementById('projectDescriptionInput');
+        const slide1ImageUrlInput = document.getElementById('slide1ImageUrl');
+        const slide2ImageUrlInput = document = document.getElementById('slide2ImageUrl');
+        const slide3ImageUrlInput = document.getElementById('slide3ImageUrl');
+        const slide3OverlayTextInput = document.getElementById('slide3OverlayText');
+        const detailedPhotoUrlsInput = document.getElementById('detailedPhotoUrls');
+
+        // Elemente modal "Mai multe detalii"
+        const moreDetailsModal = document.getElementById('moreDetailsModal');
+        const moreDetailsTitle = document.getElementById('moreDetailsTitle');
+        const detailedTrack = document.getElementById('detailedTrack');
+        const prevDetailedBtn = document.getElementById('prevDetailedBtn');
+        const nextDetailedBtn = document.getElementById('nextDetailedBtn');
+        const closeDetailedModalBtn = document.getElementById('closeDetailedModalBtn');
+
+        const messageBox = document.getElementById('messageBox');
+
+        // Elemente pentru descrierea colapsabilă din antet
+        const mainDescriptionContainer = document.getElementById('mainDescriptionContainer');
+        const toggleDescriptionBtn = document.getElementById('toggleDescriptionBtn');
+
+        // Variabile pentru controlul derulării/glisării interne a caruselurilor
+        const INTERNAL_SCROLL_DEBOUNCE_TIME = 500; // milisecunde pentru a preveni schimbările rapide de slide
+        const MIN_SWIPE_DISTANCE = 50; // pixeli pentru o glisare verticală validă
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        /**
+         * Afișează o casetă de mesaj temporară.
+         * @param {string} message - Mesajul de afișat.
+         * @param {number} duration - Durata în milisecunde.
+         */
+        function showMessage(message, duration = 3000) {
+            messageBox.textContent = message;
+            messageBox.classList.add('show');
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, duration);
+        }
+
+        /**
+         * Randă toate proiectele în containerul principal.
+         * Fiecare proiect va avea propriul său carusel și detalii.
+         */
+        function renderAllProjects() {
+            allProjectsContainer.innerHTML = ''; // Golește proiectele existente
+
+            projects.forEach((project, projectIndex) => {
+                const projectCard = document.createElement('div');
+                projectCard.id = `project-card-${projectIndex}`;
+                projectCard.classList.add('project-card', 'w-full', 'max-w-4xl', 'mx-auto', 'flex', 'flex-col', 'items-center', 'justify-center', 'gap-4');
+
+                // Secțiunea Caruselului de Proiect
+                const projectCarouselSection = document.createElement('section');
+                projectCarouselSection.classList.add('project-carousel');
+
+                const internalSlideContainer = document.createElement('div');
+                internalSlideContainer.classList.add('internal-slide-container', 'h-full', 'w-full');
+                internalSlideContainer.setAttribute('data-project-index', projectIndex); // Important pentru identificarea proiectului
+
+                projectCarouselSection.appendChild(internalSlideContainer);
+                projectCard.appendChild(projectCarouselSection);
+
+                // Adaugă săgețile de navigare în carusel
+                const prevBtn = document.createElement('button');
+                prevBtn.classList.add('carousel-button', 'carousel-button-prev');
+                prevBtn.innerHTML = '&#8249;'; // Left arrow
+                prevBtn.addEventListener('click', (event) => {
+                    event.stopPropagation(); // Prevent modal from closing if it's open
+                    navigateInternalSlide(projectIndex, -1);
+                });
+                projectCarouselSection.appendChild(prevBtn);
+
+                const nextBtn = document.createElement('button');
+                nextBtn.classList.add('carousel-button', 'carousel-button-next');
+                nextBtn.innerHTML = '&#8250;'; // Right arrow
+                nextBtn.addEventListener('click', (event) => {
+                    event.stopPropagation(); // Prevent modal from closing if it's open
+                    navigateInternalSlide(projectIndex, 1);
+                });
+                projectCarouselSection.appendChild(nextBtn);
+
+
+                // Secțiunea Detaliilor Proiectului
+                const projectDetailsSection = document.createElement('section');
+                projectDetailsSection.classList.add('w-full', 'bg-black', 'border', 'border-white', 'rounded-lg', 'p-6', 'shadow-lg', 'text-center', 'mt-4');
+
+                const projectTitle = document.createElement('h2');
+                projectTitle.classList.add('text-3xl', 'font-semibold', 'mb-2');
+                projectTitle.textContent = project.title;
+
+                const projectDescription = document.createElement('p');
+                projectDescription.classList.add('text-gray-300', 'text-lg');
+                projectDescription.textContent = project.description;
+
+                projectDetailsSection.appendChild(projectTitle);
+                projectDetailsSection.appendChild(projectDescription);
+                projectCard.appendChild(projectDetailsSection);
+
+                allProjectsContainer.appendChild(projectCard);
+
+                // Randăm slide-ul inițial pentru caruselul acestui proiect specific
+                renderInternalSlideForProject(projectIndex, project.currentInternalSlideIndex);
+
+                // Nu mai adăugăm ascultători de evenimente de scroll/touch pentru caruselul intern,
+                // ci ne bazăm pe săgețile de navigare.
+            });
+        }
+
+        /**
+         * Navighează slide-urile interne ale unui proiect specific.
+         * @param {number} projectIdx - Indexul proiectului.
+         * @param {number} direction - -1 pentru anterior, 1 pentru următor.
+         */
+        function navigateInternalSlide(projectIdx, direction) {
+            const project = projects[projectIdx];
+            if (!project) return;
+
+            project.currentInternalSlideIndex += direction;
+
+            if (project.currentInternalSlideIndex < 0) {
+                project.currentInternalSlideIndex = project.internalSlides.length - 1;
+            } else if (project.currentInternalSlideIndex >= project.internalSlides.length) {
+                project.currentInternalSlideIndex = 0;
+            }
+            renderInternalSlideForProject(projectIdx, project.currentInternalSlideIndex);
+        }
+
+
+        /**
+         * Randă un slide intern specific pentru un carusel de proiect dat.
+         * Aplică animațiile corespunzătoare.
+         * @param {number} projectIdx - Indexul proiectului.
+         * @param {number} slideIdx - Indexul slide-ului intern de randat.
+         */
+        function renderInternalSlideForProject(projectIdx, slideIdx) {
+            const project = projects[projectIdx];
+            const slide = project.internalSlides[slideIdx];
+            const targetInternalSlideContainer = document.querySelector(`.internal-slide-container[data-project-index="${projectIdx}"]`);
+
+            if (!slide || !targetInternalSlideContainer) return;
+
+            const currentActiveSlide = targetInternalSlideContainer.querySelector('.internal-slide.active');
+
+            const newSlideElement = document.createElement('div');
+            newSlideElement.classList.add('internal-slide');
+
+            if (slide.type === "image") {
+                const img = document.createElement('img');
+                img.src = slide.imageUrl;
+                img.alt = project.title + ' slide ' + slideIdx;
+                img.classList.add('project-image');
+                img.onerror = function() {
+                    this.src = `https://placehold.co/800x1200/000000/FFFFFF?text=Eroare+Imagine`;
+                };
+                newSlideElement.appendChild(img);
+            } else if (slide.type === "image-with-text") {
+                const img = document.createElement('img');
+                img.src = slide.imageUrl;
+                img.alt = project.title + ' slide ' + slideIdx;
+                img.classList.add('project-image');
+                img.onerror = function() {
+                    this.src = `https://placehold.co/800x1200/000000/FFFFFF?text=Eroare+Imagine`;
+                };
+                newSlideElement.appendChild(img);
+
+                const overlayText = document.createElement('div');
+                overlayText.classList.add('image-overlay-text');
+                overlayText.textContent = slide.overlayText;
+                newSlideElement.appendChild(overlayText);
+            } else if (slide.type === "more-info") {
+                const img = document.createElement('img');
+                img.src = slide.imageUrl;
+                img.alt = project.title + ' mai multe informații';
+                img.classList.add('project-image');
+                img.onerror = function() {
+                    this.src = `https://placehold.co/800x1200/000000/FFFFFF?text=Eroare+Imagine`;
+                };
+                newSlideElement.appendChild(img);
+
+                const moreInfoOverlay = document.createElement('div');
+                moreInfoOverlay.classList.add('more-info-overlay');
+
+                const moreBtn = document.createElement('button');
+                moreBtn.textContent = "Mai multe despre acest proiect";
+                moreBtn.addEventListener('click', (event) => {
+                    event.stopPropagation(); // Previne avansarea slide-ului intern
+                    openMoreDetailsModal(projectIdx);
+                });
+                moreInfoOverlay.appendChild(moreBtn);
+                newSlideElement.appendChild(moreInfoOverlay);
+            }
+
+            // Elimină slide-ul activ anterior și adaugă noul slide cu animație
+            if (currentActiveSlide) {
+                currentActiveSlide.classList.remove('active');
+                currentActiveSlide.classList.add('animate-out');
+                currentActiveSlide.addEventListener('animationend', () => {
+                    currentActiveSlide.remove();
+                }, { once: true });
+            }
+
+            targetInternalSlideContainer.appendChild(newSlideElement);
+            void newSlideElement.offsetWidth; // Forțează reflow pentru animație
+            newSlideElement.classList.add('active', 'animate-in');
+        }
+
+        /**
+         * Deschide modalul de încărcare a proiectului.
+         * (Funcționalitate păstrată în JS, dar butonul de declanșare e eliminat din HTML)
+         */
+        function openUploadModal() {
+            uploadModal.classList.add('open');
+            // Golește valorile anterioare ale inputurilor
+            projectTitleInput.value = '';
+            projectDescriptionInput.value = '';
+            slide1ImageUrlInput.value = '';
+            slide2ImageUrlInput.value = '';
+            slide3ImageUrlInput.value = '';
+            slide3OverlayTextInput.value = '';
+            detailedPhotoUrlsInput.value = '';
+        }
+
+        /**
+         * Închide modalul de încărcare a proiectului.
+         */
+        function closeUploadModal() {
+            uploadModal.classList.remove('open');
+        }
+
+        /**
+         * Gestionează salvarea unui proiect nou din inputurile modalului.
+         * Populează slide-urile interne și fotografiile detaliate cu URL-urile furnizate sau cu placeholder-uri.
+         * (Funcționalitate păstrată în JS, dar butonul de declanșare e eliminat din HTML)
+         */
+        function saveProject() {
+            const title = projectTitleInput.value.trim();
+            const description = projectDescriptionInput.value.trim();
+            const slide1Url = slide1ImageUrlInput.value.trim();
+            const slide2Url = slide2ImageUrlInput.value.trim();
+            const slide3Url = slide3ImageUrlInput.value.trim();
+            const slide3OverlayText = slide3OverlayTextInput.value.trim();
+            const detailedUrls = detailedPhotoUrlsInput.value.trim();
+
+            if (!title || !description || !slide1Url) {
+                showMessage("Vă rugăm să completați cel puțin Titlul Proiectului, Descrierea și URL-ul Imaginii Slide 1.");
+                return;
+            }
+
+            const newInternalSlides = [
+                { type: "image", imageUrl: slide1Url },
+                { type: "image", imageUrl: slide2Url || `https://placehold.co/800x1200/555555/FFFFFF?text=${encodeURIComponent(title)}+Slide+2` },
+                { type: "image-with-text", imageUrl: slide3Url || `https://placehold.co/800x1200/777777/FFFFFF?text=${encodeURIComponent(title)}+Slide+3`, overlayText: slide3OverlayText || "Explorează Mai Mult" },
+                { type: "more-info", imageUrl: `https://placehold.co/800x1200/999999/FFFFFF?text=Mai+Multe+Detalii+despre+${encodeURIComponent(title)}` }
+            ];
+
+            const newDetailedPhotos = detailedUrls.split(',').map(url => url.trim()).filter(url => url !== '');
+            if (newDetailedPhotos.length === 0) {
+                for (let i = 1; i <= 3; i++) {
+                    newDetailedPhotos.push(`https://placehold.co/800x1200/000000/FFFFFF?text=${encodeURIComponent(title)}+Detalii+${i}`);
+                }
+            }
+
+            const newProject = {
+                title,
+                description,
+                internalSlides: newInternalSlides,
+                allDetailedPhotos: newDetailedPhotos,
+                currentInternalSlideIndex: 0
+            };
+
+            projects.push(newProject);
+            renderAllProjects(); // Re-randăm toate proiectele pentru a include noul proiect
+            closeUploadModal();
+            showMessage("Proiect adăugat cu succes!");
+        }
+
+        /**
+         * Deschide modalul "Mai multe detalii" și populează caruselul său cu fotografii specifice proiectului.
+         * @param {number} projectIdx - Indexul proiectului ale cărui detalii trebuie afișate.
+         */
+        function openMoreDetailsModal(projectIdx) {
+            const project = projects[projectIdx];
+            if (!project || project.allDetailedPhotos.length === 0) {
+                showMessage("Nu există fotografii detaliate disponibile pentru acest proiect.");
+                return;
+            }
+
+            moreDetailsTitle.textContent = `Galerie Detaliată: ${project.title}`;
+            detailedTrack.innerHTML = ''; // Golește fotografiile anterioare
+            currentDetailedSlideIndex = 0; // Resetează indexul caruselului detaliat
+
+            project.allDetailedPhotos.forEach((imageUrl, index) => {
+                const detailedSlide = document.createElement('div');
+                detailedSlide.classList.add('detailed-slide');
+                detailedSlide.setAttribute('data-index', index);
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `Fotografie detaliată pentru ${project.title} ${index + 1}`;
+                img.onerror = function() {
+                    this.src = `https://placehold.co/800x1200/000000/FFFFFF?text=Eroare+Imagine`;
+                };
+                detailedSlide.appendChild(img);
+                detailedTrack.appendChild(detailedSlide);
+            });
+
+            updateDetailedCarouselDisplay();
+            moreDetailsModal.classList.add('open');
+        }
+
+        /**
+         * Actualizează afișajul caruselului modalului "Mai multe detalii".
+         */
+        function updateDetailedCarouselDisplay() {
+            const offset = -currentDetailedSlideIndex * 100;
+            detailedTrack.style.transform = `translateX(${offset}%)`;
+
+            document.querySelectorAll('#detailedTrack .detailed-slide').forEach((slide, index) => {
+                if (index === currentDetailedSlideIndex) {
+                    slide.classList.add('active');
+                    slide.classList.add('slide-left-to-center-enter');
+                    void slide.offsetWidth; // Declanșează reflow
+                    slide.classList.add('slide-left-to-center-enter-active');
+                } else {
+                    slide.classList.remove('active');
+                    slide.classList.remove('slide-left-to-center-enter', 'slide-left-to-center-enter-active');
+                }
+            });
+        }
+
+        /**
+         * Navighează la fotografia anterioară în modalul "Mai multe detalii".
+         */
+        function showPreviousDetailedPhoto() {
+            const detailedSlides = detailedTrack.querySelectorAll('.detailed-slide');
+            if (detailedSlides.length === 0) return;
+
+            currentDetailedSlideIndex = (currentDetailedSlideIndex - 1 + detailedSlides.length) % detailedSlides.length;
+            updateDetailedCarouselDisplay();
+        }
+
+        /**
+         * Navighează la fotografia următoare în modalul "Mai multe detalii".
+         */
+        function showNextDetailedPhoto() {
+            const detailedSlides = detailedTrack.querySelectorAll('.detailed-slide');
+            if (detailedSlides.length === 0) return;
+
+            currentDetailedSlideIndex = (currentDetailedSlideIndex + 1) % detailedSlides.length;
+            updateDetailedCarouselDisplay();
+        }
+
+        /**
+         * Închide modalul "Mai multe detalii".
+         */
+        function closeDetailedModal() {
+            moreDetailsModal.classList.remove('open');
+        }
+
+        /**
+         * Animația butoanelor caruselului detaliat la click.
+         * @param {string} direction - 'prev' sau 'next'.
+         */
+        function animateDetailedButtons(direction) {
+            const prevBtn = prevDetailedBtn;
+            const nextBtn = nextDetailedBtn;
+
+            // Aplica animatia de slide-out si fade-out
+            prevBtn.style.animation = `buttonSlideOutLeftFadeOut 0.5s ease-out forwards`;
+            nextBtn.style.animation = `buttonSlideOutRightFadeOut 0.5s ease-out forwards`;
+
+            // Dezactiveaza butoanele pe durata animatiei
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+
+            // Dupa animatia de slide-out (0.5s), schimba slide-ul
+            setTimeout(() => {
+                // Reseteaza proprietatile de animatie imediat dupa schimbarea slide-ului
+                prevBtn.style.animation = '';
+                nextBtn.style.animation = '';
+
+                // Fortam reflow pentru a ne asigura ca stilurile sunt resetate inainte de urmatoarea animatie
+                void prevBtn.offsetWidth;
+                void nextBtn.offsetWidth;
+
+                // Schimba slide-ul
+                if (direction === 'prev') {
+                    showPreviousDetailedPhoto();
+                } else {
+                    showNextDetailedPhoto();
+                }
+
+                // Aplica animatia de fade-in dupa 1 secunda totala (0.5s slide-out + 0.5s intarziere)
+                setTimeout(() => {
+                    prevBtn.style.animation = `buttonFadeIn 0.5s ease-in forwards`;
+                    nextBtn.style.animation = `buttonFadeIn 0.5s ease-in forwards`;
+
+                    // Reactiveaza butoanele dupa animatia de fade-in
+                    setTimeout(() => {
+                        prevBtn.style.animation = ''; // Curata stilul de animatie
+                        nextBtn.style.animation = ''; // Curata stilul de animatie
+                        prevBtn.disabled = false;
+                        nextBtn.disabled = false;
+                    }, 500); // Durata animatiei buttonFadeIn
+                }, 500); // Timpul ramas pentru a atinge 1 secunda total
+            }, 500); // Durata animatiilor buttonSlideOut
+        }
+
+        /**
+         * Gestionează animația de fade a secțiunii de antet la derulare.
+         */
+        function handleHeaderFade() {
+            const scrollY = window.scrollY;
+            const headerHeight = headerSection.offsetHeight; // Obține înălțimea completă a secțiunii de antet
+
+            // Calculează opacitatea: începe de la 1, ajunge la 0 când scrollY atinge headerHeight
+            let opacity = 1 - (scrollY / headerHeight);
+
+            // Limitează opacitatea între 0 și 1
+            opacity = Math.max(0, Math.min(1, opacity));
+
+            headerSection.style.opacity = opacity;
+
+            // Opțional: dezactivează evenimentele pointer când este complet estompat
+            if (opacity === 0) {
+                headerSection.style.pointerEvents = 'none';
+            } else {
+                headerSection.style.pointerEvents = 'auto';
+            }
+        }
+
+
+        // Ascultători de evenimente
+        window.addEventListener('scroll', handleHeaderFade); // Listener pentru animația antetului
+
+        // Butoane modal "Mai multe detalii"
+        prevDetailedBtn.addEventListener('click', () => animateDetailedButtons('prev'));
+        nextDetailedBtn.addEventListener('click', () => animateDetailedButtons('next'));
+        closeDetailedModalBtn.addEventListener('click', closeDetailedModal);
+
+        // Listener pentru descrierea colapsabilă
+        toggleDescriptionBtn.addEventListener('click', () => {
+            isDescriptionExpanded = !isDescriptionExpanded;
+            if (isDescriptionExpanded) {
+                mainDescriptionContainer.classList.add('expanded');
+                toggleDescriptionBtn.textContent = 'Citește mai puțin';
+                // Adjust scroll to keep the button visible on mobile when expanded
+                if (window.innerWidth <= 768) { // Only for mobile
+                    setTimeout(() => {
+                        const descriptionBottom = mainDescriptionContainer.getBoundingClientRect().bottom;
+                        const viewportHeight = window.innerHeight;
+                        // Scroll down only if the button is below the viewport
+                        if (descriptionBottom > viewportHeight) {
+                            window.scrollBy({
+                                top: descriptionBottom - viewportHeight + toggleDescriptionBtn.offsetHeight + 20, // Scroll down enough to show the button and some padding
+                                behavior: 'smooth'
+                            });
+                        }
+                        // If the description is expanded, ensure the top of the description is visible
+                        const headerTop = headerSection.getBoundingClientRect().top;
+                        if (headerTop < 0) { // If header is scrolled out of view
+                            window.scrollTo({
+                                top: headerSection.offsetTop, // Scroll to the top of the header section
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, 550); // Small delay to allow max-height transition
+                }
+            } else {
+                mainDescriptionContainer.classList.remove('expanded');
+                toggleDescriptionBtn.textContent = 'Citește mai mult';
+            }
+        });
+
+        // Randare inițială la încărcarea paginii
+        window.onload = function() {
+            renderAllProjects(); // Randăm toate proiectele la încărcare
+            // Inițializăm opacitatea antetului la încărcare
+            handleHeaderFade();
+        };
+    </script>
+</body>
+</html>
