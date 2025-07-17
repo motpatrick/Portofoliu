@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofoliu Design Interior</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display for headings, Open Sans for body text -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles matching Sophie Paterson's aesthetic */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f8f8f8; /* Light background */
+            color: #333; /* Dark text */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevents horizontal scroll from body */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            color: #222;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e0e0e0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b0b0b0;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #909090;
+        }
+
+        /* Header/Hero Section */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Updated: Hero image from Imgur link as background */
+            background-image: url('https://i.imgur.com/GEoSpSd.jpeg');
+            background-size: cover;
+            background-position: center;
+            /* Removed filter: brightness(0.4); as requested */
+            z-index: -1;
+        }
+
+        .hero-content {
+            z-index: 1;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem; /* Smaller heading for "Mot Patrick" */
+            font-weight: 600; /* Slightly lighter weight for "finut" */
+            margin-bottom: 0.5rem; /* Space for the subtitle */
+            line-height: 1.1;
+            color: white; /* Reverted to white text color */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Added subtle text shadow for readability */
+        }
+
+        .hero-content p.subtitle { /* New style for the subtitle */
+            font-size: 1.2rem; /* Even smaller font for subtitle */
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.8); /* Reverted to semi-transparent white */
+            margin-top: 0;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background-color: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .navbar-links a {
+            color: #555;
+            text-decoration: none;
+            font-weight: 400;
+            margin-left: 2.5rem;
+            transition: color 0.3s ease, background-color 0.3s ease, border-radius 0.3s ease;
+            padding: 0.5rem 0.8rem;
+            border-radius: 0.25rem;
+        }
+
+        .navbar-links a:hover {
+            color: #222;
+            background-color: rgba(245, 245, 220, 0.2); /* Subtle beige accent on hover */
+        }
+
+        /* About Section - Reverted to an earlier version */
+        .about-section {
+            padding: 6rem 2rem;
+            max-width: 1200px; /* Overall width of the section */
+            margin: 0 auto; /* Center the entire section */
+            display: flex;
+            align-items: center; /* Vertically align items (image and text block) */
+            justify-content: center; /* Center the image and text block as a unit */
+            flex-wrap: wrap; /* Allow elements to wrap on smaller screens */
+        }
+
+        .about-image-container {
+            width: 350px; /* Fixed width for the image */
+            height: 490px; /* Calculated height for 5:7 aspect ratio (350 * 7/5) */
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0; /* Prevent image from shrinking */
+            flex-grow: 0; /* Prevent image from growing */
+        }
+
+        .about-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+
+        .about-text-content {
+            flex: 1; /* Allow text content to take remaining horizontal space */
+            padding: 3rem;
+            background-color: #f5f5dc; /* Beige color */
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            text-align: left;
+            margin-left: 2rem; /* Space between image and text */
+            min-width: 400px; /* Ensure text block has a minimum readable width */
+            min-height: 490px; /* Ensure text block matches image height */
+            display: flex; /* Use flex to align content inside text block */
+            flex-direction: column;
+            justify-content: center; /* Center text vertically within its box */
+        }
+
+        .about-text-content h2 {
+            font-size: 2.8rem; /* Smaller font size for title */
+            font-weight: 600;
+            margin-bottom: 1.5rem; /* Reduced margin */
+            position: relative;
+            display: inline-block;
+            left: 0; /* Align the pseudo-element to the left of the h2 */
+            transform: none; /* Reset transform */
+        }
+        .about-text-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0; /* Align the underline to the left of the h2 */
+            transform: none; /* Reset transform */
+            width: 80px;
+            height: 2px;
+            background-color: #b8860b; /* Brass accent */
+        }
+
+        .about-text-content p {
+            font-size: 1rem; /* Smaller font size for text */
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 1.2rem; /* Reduced margin */
+        }
+
+        /* Projects Section (Grid Layout) */
+        .projects-section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .projects-section h2 {
+            font-size: 3.5rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .projects-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background-color: #b8860b; /* Brass accent */
+        }
+
+        .project-grid {
+            display: grid;
+            /* Default for full projects page, e.g., 2 or 3 columns based on screen size */
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            justify-items: center; /* Center items in grid cells */
+        }
+
+        /* Specific style for home page projects (3 in a row) */
+        .project-grid.home-page-grid {
+            grid-template-columns: repeat(3, 1fr); /* Force 3 columns */
+            gap: 1.5rem; /* Smaller gap for tighter fit */
+        }
+
+        .project-grid.home-page-grid .project-item {
+            width: 100%; /* Ensure items take full column width */
+            max-width: 300px; /* Limit max width for very large screens to keep proportions */
+            height: auto; /* Allow height to adjust */
+        }
+
+        .project-grid.home-page-grid .project-item img {
+            height: 250px; /* Smaller height for images on home page */
+        }
+
+        /* Adjustments for mobile for home-page-grid */
+        @media (max-width: 768px) {
+            .project-grid.home-page-grid {
+                grid-template-columns: 1fr; /* Stack on small screens */
+                gap: 2rem;
+            }
+            .project-grid.home-page-grid .project-item {
+                max-width: 90%; /* Adjust max-width for mobile */
+            }
+            .project-grid.home-page-grid .project-item img {
+                height: 200px; /* Even smaller height for images on mobile home page */
+            }
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: #e8e8e8; /* Light grey background */
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        .contact-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background-color: #b8860b; /* Brass accent */
+        }
+
+        .contact-section p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: #444;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 0.3rem;
+            font-size: 1rem;
+            color: #333;
+            background-color: #fefefe;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #a0a0a0;
+        }
+
+        .submit-button {
+            background-color: #333;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 0.3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: none;
+        }
+
+        .submit-button:hover {
+            background-color: #555;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #222;
+            color: #f0f0f0;
+            padding: 3rem 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a {
+            color: #f0f0f0;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #b8860b; /* Brass accent on hover */
+        }
+
+        /* Project Detail Page (Modal-like behavior) */
+        .project-detail-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f8f8f8; /* Match body background */
+            z-index: 200; /* Higher than navbar */
+            overflow-y: auto;
+            padding: 2rem;
+            display: none; /* Hidden by default */
+        }
+
+        .project-detail-page.active {
+            display: block;
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-top: 1rem;
+        }
+
+        .back-button {
+            background-color: transparent;
+            border: 1px solid #ccc;
+            color: #555;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-button:hover {
+            background-color: #eee;
+            color: #333;
+        }
+
+        .detail-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-bottom: 4rem;
+        }
+
+        .detail-content h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .detail-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+
+        .detail-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .detail-gallery img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive adjustments - reverted for about-section */
+        @media (max-width: 1024px) {
+            .about-image-container {
+                width: 300px; /* Slightly smaller on medium screens */
+                height: 420px; /* 300 * 7/5 */
+            }
+            .about-text-content {
+                min-width: 300px; /* Adjust min-width */
+                min-height: 420px; /* Match new image height */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .about-section {
+                padding: 4rem 1rem;
+                flex-direction: column; /* Stack on small screens */
+            }
+            .about-image-container {
+                width: 250px; /* Even smaller on small screens */
+                height: 350px; /* 250 * 7/5 */
+                margin-bottom: 2rem; /* Add space when stacked */
+            }
+            .about-text-content {
+                padding: 1.5rem; /* Smaller padding */
+                min-width: 250px; /* Adjust min-width */
+                min-height: auto; /* Allow height to adjust when stacked */
+                margin-left: 0; /* Remove left margin when stacked */
+            }
+            .about-text-content h2 {
+                font-size: 2.2rem; /* Even smaller title on very small mobile screens */
+            }
+            .about-section p, .contact-section p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="navbar-logo">Mot Patrick</a>
+        <div class="navbar-links">
+            <a href="#about">Despre Mine</a>
+            <a href="#projects">Proiecte</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="heroSection">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <h1>Mot Patrick</h1>
+            <p class="subtitle">- designer de interior -</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="about-image-container">
+            <!-- Placeholder image for 5:7 aspect ratio -->
+            <img src="https://placehold.co/350x490/D3D3D3/555555?text=Fotografie+5:7" alt="Mot Patrick - Designer Interior" class="about-image">
+        </div>
+        <div class="about-text-content">
+            <h2>Despre Mine</h2>
+            <p>Mă specializez în crearea de spații unice și funcționale, adaptate nevoilor și dorințelor fiecărui client. Ofer soluții complete de design interior pentru proiecte rezidențiale, comerciale și de birouri, cu un accent deosebit pe estetică și confort.</p>
+            <p>De la alegerea materialelor, culorilor și mobilierului, până la implementarea detaliilor finale, mă asigur că fiecare element este perfect integrat. Fiecare proiect este tratat cu atenție și profesionalism, asigurându-mă că rezultatul final depășește așteptările tale.</p>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects-section" id="projects">
+        <h2>Ultimele Proiecte</h2>
+        <div class="project-grid" id="projectGrid">
+            <!-- Project items will be dynamically loaded here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <h2>Contact</h2>
+        <p>Mă puteți contacta folosind formularul de mai jos sau direct prin email.</p>
+        <div class="contact-form">
+            <div class="form-group">
+                <label for="name">Numele Tău</label>
+                <input type="text" id="name" placeholder="Numele Complet">
+            </div>
+            <div class="form-group">
+                <label for="email">Adresa de Email</label>
+                <input type="email" id="email" placeholder="adresa@exemplu.com">
+            </div>
+            <div class="form-group">
+                <label for="message">Mesajul Tău</label>
+                <textarea id="message" rows="5" placeholder="Scrie mesajul aici..."></textarea>
+            </div>
+            <button class="submit-button">Trimite Mesajul</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#privacyPolicy">Politica de Confidențialitate</a>
+            <a href="#termsAndConditions">Termeni și Condiții</a>
+        </div>
+        <p class="mt-4">&copy; 2025 Mot Patrick. Toate drepturile rezervate.</p>
+    </footer>
+
+    <!-- Project Detail Page (simulated as a full-screen overlay) -->
+    <div class="project-detail-page" id="projectDetailPage">
+        <div class="detail-header">
+            <button class="back-button" id="backToProjectsBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 =0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                Înapoi la Proiecte
+            </button>
+        </div>
+        <div class="detail-content">
+            <h1 id="detailProjectTitle"></h1>
+            <p id="detailProjectDescription"></p>
+            <div class="detail-gallery" id="detailProjectGallery">
+                <!-- Detailed project images will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Politica de Confidențialitate (simulată) -->
+    <div class="project-detail-page" id="privacyPolicy">
+        <div class="detail-header">
+            <button class="back-button" onclick="hidePolicyAndTerms()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                Înapoi
+            </button>
+        </div>
+        <div class="detail-content">
+            <h1>Politica de Confidențialitate</h1>
+            <p>Această Politică de Confidențialitate descrie modul în care informațiile tale personale sunt colectate, utilizate și partajate atunci când vizitezi sau faci o achiziție de pe [Numele Site-ului Tău].</p>
+            <h2>Informații Personale Colectate</h2>
+            <p>Când vizitezi Site-ul, colectăm automat anumite informații despre dispozitivul tău, inclusiv informații despre browserul tău web, adresa IP, fusul orar și unele dintre cookie-urile instalate pe dispozitivul tău. În plus, pe măsură ce navighezi pe Site, colectăm informații despre paginile web individuale sau produsele pe care le vizualizezi, ce site-uri web sau termeni de căutare te-au trimis către Site și informații despre modul în care interacționezi cu Site-ul. Ne referim la aceste informații colectate automat ca "Informații despre Dispozitiv".</p>
+            <p>Colectăm Informații despre Dispozitiv folosind următoarele tehnologii:</p>
+            <ul>
+                <li>"Cookie-uri" sunt fișiere de date care sunt plasate pe dispozitivul sau computerul tău și adesea includ un identificator unic anonim. Pentru mai multe informații despre cookie-uri și cum să le dezactivezi, vizitează http://www.allaboutcookies.org.</li>
+                <li>"Fișierele jurnal" urmăresc acțiunile care au loc pe Site și colectează date, inclusiv adresa ta IP, tipul de browser, furnizorul de servicii de internet, paginile de referință/ieșire și marcajele de dată/oră.</li>
+                <li>"Semnalizatoare web", "etichete" și "pixeli" sunt fișiere electronice utilizate pentru a înregistra informații despre modul în care navighezi pe Site.</li>
+            </ul>
+            <p>În plus, atunci când încerci să mă contactezi prin formularul de contact, colectăm anumite informații de la tine, inclusiv numele tău, adresa de email și mesajul tău. Ne referim la aceste informații ca "Informații de Contact".</p>
+            <p>Când vorbim despre "Informații Personale" în această Politică de Confidențialitate, ne referim atât la Informațiile despre Dispozitiv, cât și la Informațiile de Contact.</p>
+
+            <h2>Cum Utilizăm Informațiile Tale Personale?</h2>
+            <p>Utilizăm Informațiile de Contact pe care le colectăm în general pentru a comunica cu tine, pentru a răspunde la întrebările tale și pentru a-ți oferi informații legate de serviciile noastre.</p>
+            <p>Utilizăm Informațiile despre Dispozitiv pe care le colectăm pentru a ne ajuta să detectăm riscuri și fraude potențiale (în special adresa ta IP) și, mai general, pentru a îmbunătăți și optimiza Site-ul nostru (de exemplu, prin generarea de analize despre modul în care clienții noștri navighează și interacționează cu Site-ul și pentru a evalua succesul campaniilor noastre de marketing și publicitate).</p>
+
+            <h2>Partajarea Informațiilor Tale Personale</h2>
+            <p>Nu partajăm informațiile tale personale cu terți, cu excepția cazurilor necesare pentru a ne oferi serviciile sau conform cerințelor legale.</p>
+            <p>În cele din urmă, putem partaja, de asemenea, Informațiile tale Personale pentru a respecta legile și reglementările aplicabile, pentru a răspunde la o citație, un mandat de căutare sau o altă solicitare legală de informații pe care o primim, sau pentru a ne proteja în alt mod drepturile.</p>
+
+            <h2>Drepturile Tale</h2>
+            <p>Dacă ești rezident european, ai dreptul de a accesa informațiile personale pe care le deținem despre tine și de a solicita ca informațiile tale personale să fie corectate, actualizate sau șterse. Dacă dorești să exerciți acest drept, te rugăm să ne contactezi prin informațiile de contact de mai jos.</p>
+            <p>În plus, dacă ești rezident european, reține că procesăm informațiile tale pentru a îndeplini contractele pe care le-am putea avea cu tine (de exemplu, dacă faci o comandă prin intermediul Site-ului) sau în alt mod pentru a urmări interesele noastre legitime de afaceri enumerate mai sus. În plus, reține că informațiile tale vor fi transferate în afara Europei, inclusiv în Canada și Statele Unite.</p>
+
+            <h2>Păstrarea Datelor</h2>
+            <p>Atunci când plasezi o comandă prin intermediul Site-ului, vom păstra Informațiile tale de Contact pentru înregistrările noastre, cu excepția cazului în care și până când ne ceri să ștergem aceste informații.</p>
+
+            <h2>Modificări</h2>
+            <p>Putem actualiza această politică de confidențialitate din când în când pentru a reflecta, de exemplu, modificări ale practicilor noastre sau din alte motive operaționale, legale sau de reglementare.</p>
+
+            <h2>Contactează-ne</h2>
+            <p>Pentru mai multe informații despre practicile noastre de confidențialitate, dacă ai întrebări sau dacă dorești să faci o reclamație, te rugăm să ne contactezi prin email la [Adresa ta de Email] sau prin poștă folosind detaliile furnizate mai jos:</p>
+            <p>[Adresa ta fizică, dacă este cazul]</p>
+        </div>
+    </div>
+
+    <!-- Termeni și Condiții (simulată) -->
+    <div class="project-detail-page" id="termsAndConditions">
+        <div class="detail-header">
+            <button class="back-button" onclick="hidePolicyAndTerms()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                Înapoi
+            </button>
+        </div>
+        <div class="detail-content">
+            <h1>Termeni și Condiții</h1>
+            <p>Bine ai venit pe [Numele Site-ului Tău]! Acești termeni și condiții schițează regulile și reglementările pentru utilizarea site-ului web al [Numele Companiei Tale], situat la [Adresa Site-ului Tău].</p>
+            <p>Prin accesarea acestui site web, presupunem că accepți acești termeni și condiții. Nu continua să utilizezi [Numele Site-ului Tău] dacă nu ești de acord să accepți toți termenii și condițiile menționate pe această pagină.</p>
+
+            <h2>Cookie-uri:</h2>
+            <p>Site-ul utilizează cookie-uri pentru a ne ajuta să personalizăm experiența ta online. Prin accesarea [Numele Site-ului Tău], ai fost de acord să utilizezi cookie-urile necesare.</p>
+            <p>Un cookie este un fișier text care este plasat pe hard disk-ul tău de un server de pagini web. Cookie-urile nu pot fi utilizate pentru a rula programe sau a livra viruși pe computerul tău. Cookie-urile îți sunt atribuite în mod unic și pot fi citite doar de un server web din domeniul care ți-a emis cookie-ul.</p>
+            <p>Putem utiliza cookie-uri pentru colectarea, stocarea și urmărirea informațiilor în scopuri statistice sau de marketing pentru a opera site-ul nostru web. Ai capacitatea de a accepta sau de a refuza cookie-urile. Majoritatea browserelor web acceptă automat cookie-urile, dar de obicei poți modifica setarea browserului tău pentru a refuza cookie-urile, dacă preferi. Dacă alegi să refuzi cookie-urile, este posibil să nu poți experimenta pe deplin funcțiile interactive ale serviciilor [Numele Site-ului Tău] sau ale site-urilor web pe care le vizitezi.</p>
+
+            <h2>Licență:</h2>
+            <p>Cu excepția cazului în care se specifică altfel, [Numele Companiei Tale] și/sau licențiatorii săi dețin drepturile de proprietate intelectuală pentru tot materialul de pe [Numele Site-ului Tău]. Toate drepturile de proprietate intelectuală sunt rezervate. Poți accesa acest lucru de pe [Numele Site-ului Tău] pentru uz personal, sub rezerva restricțiilor stabilite în acești termeni și condiții.</p>
+            <p>Nu trebuie să:</p>
+            <ul>
+                <li>Republici material de pe [Numele Site-ului Tău]</li>
+                <li>Vinzi, închiriezi sau sublicențiezi material de pe [Numele Site-ului Tău]</li>
+                <li>Reproduci, duplici sau copiezi material de pe [Numele Site-ului Tău]</li>
+                <li>Redistribui conținut de pe [Numele Site-ului Tău]</li>
+            </ul>
+            <p>Acest acord începe la data prezentului document.</p>
+            <p>Părți ale acestui site web oferă utilizatorilor posibilitatea de a posta și schimba opinii și informații în anumite zone ale site-ului web. [Numele Companiei Tale] nu filtrează, editează, publică sau revizuiește Comentariile înainte de prezența lor pe site-ul web. Comentariile nu reflectă opiniile și părerile [Numele Companiei Tale], ale agenților și/sau afiliaților săi. Comentariile reflectă opiniile și părerile persoanei care își postează opiniile. În măsura permisă de legile aplicabile, [Numele Companiei Tale] nu va fi responsabilă pentru Comentarii sau pentru orice răspundere, daune sau cheltuieli cauzate și/sau suferite ca urmare a oricărei utilizări și/sau postări și/sau apariții a Comentariilor pe acest site web.</p>
+            <p>[Numele Companiei Tale] își rezervă dreptul de a monitoriza toate Comentariile și de a elimina orice Comentariu care poate fi considerat inadecvat, ofensator sau care cauzează încălcarea acestor Termeni și Condiții.</p>
+            <p>Garantați și declarați că:</p>
+            <ul>
+                <li>Aveți dreptul de a posta Comentariile pe site-ul nostru web și aveți toate licențele și consimțămintele necesare pentru a face acest lucru;</li>
+                <li>Comentariile nu încalcă niciun drept de proprietate intelectuală, inclusiv, fără limitare, drepturile de autor, brevetele sau mărcile comerciale ale oricărei terțe părți;</li>
+                <li>Comentariile nu conțin niciun material defăimător, calomnios, ofensator, indecent sau ilegal, care este o invazie a vieții private;</li>
+                <li>Comentariile nu vor fi utilizate pentru a solicita sau promova afaceri sau obiceiuri sau pentru a prezenta activități comerciale sau activități ilegale.</li>
+            </ul>
+            <p>Prin prezenta acordați [Numele Companiei Tale] o licență neexclusivă de a utiliza, reproduce, edita și autoriza pe alții să utilizeze, să reproduceți și să editeze oricare dintre Comentariile tale în orice formă, format sau media.</p>
+
+            <h2>Hyperlinking către Conținutul nostru:</h2>
+            <p>Următoarele organizații pot face link către site-ul nostru web fără aprobare scrisă prealabilă:</p>
+            <ul>
+                <li>Agenții guvernamentale;</li>
+                <li>Motoare de căutare;</li>
+                <li>Organizații de știri;</li>
+                <li>Distribuitori de directoare online pot face link către site-ul nostru web în același mod în care fac hyperlink către site-urile web ale altor afaceri listate; și</li>
+                <li>Afaceri acreditate la nivel de sistem, cu excepția solicitării de organizații non-profit, centre comerciale de caritate și grupuri de strângere de fonduri de caritate care nu pot face hyperlink către site-ul nostru web.</li>
+            </ul>
+            <p>Aceste organizații pot face link către pagina noastră de pornire, către publicații sau către alte informații de pe site-ul web, atâta timp cât link-ul: (a) nu este în niciun fel înșelător; (b) nu implică în mod fals sponsorizarea, aprobarea sau avizarea părții care face link și a produselor și/sau serviciilor sale; și (c) se încadrează în contextul site-ului părții care face link.</p>
+            <p>Putem lua în considerare și aproba alte solicitări de link de la următoarele tipuri de organizații:</p>
+            <ul>
+                <li>surse de informații cunoscute pentru consumatori și/sau afaceri;</li>
+                <li>site-uri comunitare dot.com;</li>
+                <li>asociații sau alte grupuri care reprezintă organizații de caritate;</li>
+                <li>distribuitori de directoare online;</li>
+                <li>portaluri de internet;</li>
+                <li>firme de contabilitate, avocatură și consultanță; și</li>
+                <li>instituții de învățământ și asociații comerciale.</li>
+            </ul>
+            <p>Vom aproba solicitările de link de la aceste organizații dacă decidem că: (a) link-ul nu ne-ar face să arătăm nefavorabil nouă înșine sau afacerilor noastre acreditate; (b) organizația nu are un istoric negativ cu noi; (c) beneficiul pentru noi din vizibilitatea hyperlink-ului compensează absența [Numele Companiei Tale]; și (d) link-ul este în contextul informațiilor generale despre resurse.</p>
+            <p>Aceste organizații pot face link către pagina noastră de pornire atâta timp cât link-ul: (a) nu este în niciun fel înșelător; (b) nu implică în mod fals sponsorizarea, aprobarea sau avizarea părții care face link și a produselor sau serviciilor sale; și (c) se încadrează în contextul site-ului părții care face link.</p>
+            <p>Dacă ești una dintre organizațiile enumerate în paragraful 2 de mai sus și ești interesat să faci link către site-ul nostru web, trebuie să ne informezi trimițând un e-mail la [Adresa ta de Email]. Te rugăm să incluzi numele tău, numele organizației tale, informațiile de contact, precum și URL-ul site-ului tău, o listă a oricăror URL-uri de la care intenționezi să faci link către site-ul nostru web și o listă a URL-urilor de pe site-ul nostru către care dorești să faci link. Așteaptă 2-3 săptămâni pentru un răspuns.</p>
+            <p>Organizațiile aprobate pot face hyperlink către site-ul nostru web după cum urmează:</p>
+            <ul>
+                <li>Prin utilizarea numelui nostru corporativ; sau</li>
+                <li>Prin utilizarea localizatorului uniform de resurse la care se face link; sau</li>
+                <li>Prin utilizarea oricărei alte descrieri a site-ului nostru web la care se face link, care are sens în contextul și formatul conținutului de pe site-ul părții care face link.</li>
+            </ul>
+            <p>Nu va fi permisă utilizarea logo-ului [Numele Companiei Tale] sau a altor opere de artă pentru link-uri în absența unui acord de licență pentru marcă comercială.</p>
+
+            <h2>Răspunderea pentru Conținut:</h2>
+            <p>Nu vom fi responsabili pentru niciun conținut care apare pe site-ul tău web. Ești de acord să ne despăgubești și să ne aperi împotriva tuturor revendicărilor care apar pe site-ul tău web. Niciun link nu ar trebui să apară pe niciun site web care poate fi interpretat ca defăimător, obscen sau penal, sau care încalcă în alt mod sau susține încălcarea oricăror drepturi ale terților.</p>
+
+            <h2>Rezervarea Drepturilor:</h2>
+            <p>Ne rezervăm dreptul de a solicita să elimini toate link-urile sau orice link particular către site-ul nostru web. Ești de acord să elimini imediat toate link-urile către site-ul nostru web la cerere. De asemenea, ne rezervăm dreptul de a modifica acești termeni și condiții și politica sa de link-uri în orice moment. Prin continuarea link-ului către site-ul nostru web, ești de acord să respecți și să urmezi acești termeni și condiții de link-uri.</p>
+            
+            <h2>Eliminarea link-urilor de pe site-ul nostru web:</h2>
+            <p>Dacă găsești un link pe site-ul nostru web care este ofensator din orice motiv, ești liber să ne contactezi și să ne informezi în orice moment. Vom lua în considerare cererile de eliminare a link-urilor, dar nu suntem obligați să facem acest lucru sau să-ți răspundem direct.</p>
+            <p>Nu garantăm că informațiile de pe acest site web sunt corecte, nu garantăm completitudinea sau exactitatea acestora; nici nu promitem să ne asigurăm că site-ul web rămâne disponibil sau că materialul de pe site-ul web este actualizat.</p>
+
+            <h2>Disclaimer:</h2>
+            <p>În măsura maximă permisă de legea aplicabilă, excludem toate declarațiile, garanțiile și condițiile referitoare la site-ul nostru web și la utilizarea acestui site web. Nimic din acest disclaimer nu va:</p>
+            <ul>
+                <li>limita sau exclude răspunderea noastră sau a ta pentru deces sau vătămare corporală;</li>
+                <li>limita sau exclude răspunderea noastră sau a ta pentru fraudă sau denaturare frauduloasă;</li>
+                <li>limita oricare dintre răspunderile noastre sau ale tale în orice mod care nu este permis în conformitate cu legea aplicabilă; sau</li>
+                <li>exclude oricare dintre răspunderile noastre sau ale tale care nu pot fi excluse în conformitate cu legea aplicabilă.</li>
+            </ul>
+            <p>Limitările și interdicțiile de răspundere stabilite în această secțiune și în alte părți ale acestui disclaimer: (a) sunt sub rezerva paragrafului precedent; și (b) guvernează toate răspunderile care decurg din disclaimer, inclusiv răspunderile care decurg din contract, din delict și pentru încălcarea obligației legale.</p>
+            <p>Atâta timp cât site-ul web și informațiile și serviciile de pe acesta sunt furnizate gratuit, nu vom fi responsabili pentru nicio pierdere sau daună de orice natură.</p>
+        </div>
+    </div>
+
+    <script>
+        // Project data (your provided content with updated image URLs)
+        const projects = [
+            {
+                title: "Proiect #1 – Living și bucătărie",
+                description: `🎨 Stil: Modern, Clasic
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Concept design + Randări 3D + Selecție mobilier + Paletă cromatică + Strategie spațială + Planuri tehnice instalații electrice`,
+                imageUrl: "https://images.unsplash.com/photo-1595507026362-e611d9536868?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                allDetailedPhotos: [
+                    "https://images.unsplash.com/photo-1595507026362-e611d9536868?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1617104680879-19e31d7e221c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1582268482736-2487002047f6?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1583847265881-22920263f9d5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ]
+            },
+            {
+                title: "Proiect #2 – Bucatarie, Dining și Living clasic",
+                description: `🎨 Stil: Clasic american
+🛋️ Destinație: Rezidențial – casă nouă
+🛠️ Servicii oferite: Randări 3D + Concept design + Selecție mobilier + Paletă cromatică + Strategie spațială + Planuri tehnice instalații electrice`,
+                imageUrl: "https://images.unsplash.com/photo-1582268482736-2487002047f6?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                allDetailedPhotos: [
+                    "https://images.unsplash.com/photo-1582268482736-2487002047f6?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1582268482736-2487002047f6?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1582268482736-2487002047f6?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ]
+            },
+            {
+                title: "Proiect #3 – Apartament Modern",
+                description: `📐 Suprafață: 48m²
+🎨 Stil: Modern
+🛋️ Destinație: Rezidențial – apartament complet
+🛠️ Servicii oferite: Design complet + Randări 3D + Selecție mobilier + Paletă cromatică + Strategie spațială + Planuri tehnice instalații electrice și sanitare`,
+                imageUrl: "https://images.unsplash.com/photo-1583847265881-22920263f9d5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                allDetailedPhotos: [
+                    "https://images.unsplash.com/photo-1583847265881-22920263f9d5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1583847265881-22920263f9d5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1583847265881-22920263f9d5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ]
+            },
+            {
+                title: "Proiect #4 Warm Minimalist House",
+                description: `🎨 Stil: Minimalist Cald
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Design complet + Randări 3D + Selecție mobilier + Paletă cromatică + Strategie spațială`,
+                imageUrl: "https://images.unsplash.com/photo-1588851756534-f7253503f169?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG0tby1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                allDetailedPhotos: [
+                    "https://images.unsplash.com/photo-1588851756534-f7253503f169?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG0tby1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1588851756534-f7253503f169?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ]
+            },
+            {
+                title: "Proiect #5",
+                description: `🎨 Stil: Contemporan
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Design complet + Randări 3D + Selecție mobilier + Paletă cromatică + Strategie spațială + Planuri tehnice instalații electrice și sanitare`,
+                imageUrl: "https://images.unsplash.com/photo-1618221195791-eb2966a4f481?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                allDetailedPhotos: [
+                    "https://images.unsplash.com/photo-1618221195791-eb2966a4f481?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1618221195791-eb2966a4f481?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1618221195791-eb2966a4f481?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ]
+            },
+            {
+                title: "Proiect #6 – Terasă Modernă",
+                description: `🎨 Stil: Modern
+🛋️ Destinație: Terasă vilă vacanță
+🛠️ Servicii oferite: Design + Strategie spațială + Randări 3D`,
+                imageUrl: "https://images.unsplash.com/photo-1595507026362-e611d9536868?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                allDetailedPhotos: [
+                    "https://images.unsplash.com/photo-1595507026362-e611d9536868?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1617104680879-19e31d7e221c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ]
+            },
+            {
+                title: "Proiect #7 - Baie Matrimoniala",
+                description: `🎨 Stil: Modern, Clasic
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Pachet Complet de Design Interior`,
+                imageUrl: "https://images.unsplash.com/photo-1583847265881-22920263f9d5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                allDetailedPhotos: [
+                    "https://images.unsplash.com/photo-1583847265881-22920263f9d5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1583847265881-22920263f9d5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ]
+            },
+            {
+                title: "Proiect #8 - Dressing",
+                description: `🎨 Stil: Modern, Clasic
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Pachet Complet de Design Interior`,
+                imageUrl: "https://images.unsplash.com/photo-1588851756534-f7253503f169?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG0tby1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                allDetailedPhotos: [
+                    "https://images.unsplash.com/photo-1588851756534-f7253503f169?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1588851756534-f7253503f169?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ]
+            },
+            {
+                title: "Proiect #9 - Baie Clasică Masculină",
+                description: `🎨 Stil: Modern, Clasic
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Pachet Complet de Design Interior`,
+                imageUrl: "https://images.unsplash.com/photo-1618221195791-eb2966a4f481?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                allDetailedPhotos: [
+                    "https://images.unsplash.com/photo-1618221195791-eb2966a4f481?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1618221195791-eb2966a4f481?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ]
+            },
+            {
+                title: "Proiect #10 - Dormitor Masculin",
+                description: `🎨 Stil: Clasic cu influente japoneze
+🛋️ Destinație: Rezidențial
+🛠️ Servicii oferite: Pachet Complet de Design Interior`,
+                imageUrl: "https://images.unsplash.com/photo-1595507026362-e611d9536868?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                allDetailedPhotos: [
+                    "https://images.unsplash.com/photo-1595507026362-e611d9536868?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1617104680879-19e31d7e221c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ]
+            },
+            {
+                title: "Proiect #11 - Baie cu Contrast Nobil",
+                description: `🎨 Stil: Contemporan
+🛋️ Destinație: Rezidențial – apartament complet
+🛠️ Servicii oferite: Pachet Complet de Design Interior`,
+                imageUrl: "https://images.unsplash.com/photo-1583847265881-22920263f9d5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                allDetailedPhotos: [
+                    "https://images.unsplash.com/photo-1583847265881-22920263f9d5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1583847265881-22920263f9d5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ]
+            }
+        ];
+
+        // DOM elements
+        const navbar = document.getElementById('navbar');
+        const heroSection = document.getElementById('heroSection');
+        const aboutSection = document.getElementById('about');
+        const projectsSection = document.getElementById('projects');
+        const contactSection = document.getElementById('contact');
+        const projectGrid = document.getElementById('projectGrid');
+        const projectsSectionTitle = projectsSection.querySelector('h2'); // Get the h2 inside projects section
+
+        const projectDetailPage = document.getElementById('projectDetailPage');
+        const backToProjectsBtn = document.getElementById('backToProjectsBtn');
+        const detailProjectTitle = document.getElementById('detailProjectTitle');
+        const detailProjectDescription = document.getElementById('detailProjectDescription');
+        const detailProjectGallery = document.getElementById('detailProjectGallery');
+
+        /**
+         * Hides all main content sections.
+         */
+        function hideAllSections() {
+            heroSection.style.display = 'none';
+            aboutSection.style.display = 'none';
+            projectsSection.style.display = 'none';
+            contactSection.style.display = 'none';
+            // Also hide detail pages
+            projectDetailPage.classList.remove('active');
+            document.getElementById('privacyPolicy').classList.remove('active');
+            document.getElementById('termsAndConditions').classList.remove('active');
+        }
+
+        // Event listener for navbar scroll effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        /**
+         * Renders projects into the grid.
+         * @param {boolean} showAll - True to show all projects, false to show only the first 3.
+         */
+        function renderProjects(showAll) {
+            projectGrid.innerHTML = ''; // Clear existing projects
+            const projectsToRender = showAll ? projects : projects.slice(0, 3);
+
+            if (showAll) {
+                projectGrid.classList.remove('home-page-grid');
+                projectsSectionTitle.textContent = "Toate Proiectele"; // Change title for full page
+            } else {
+                projectGrid.classList.add('home-page-grid');
+                projectsSectionTitle.textContent = "Ultimele Proiecte"; // Change title for home page
+            }
+
+            projectsToRender.forEach((project, index) => {
+                const projectItem = document.createElement('div');
+                projectItem.classList.add('project-item');
+                projectItem.dataset.projectId = index; // Store index for easy lookup
+
+                const img = document.createElement('img');
+                img.src = project.imageUrl;
+                img.alt = project.title;
+                img.onerror = function() {
+                    this.src = `https://placehold.co/600x400/E0E0E0/333333?text=Eroare+Imagine`; // Fallback image
+                };
+                projectItem.appendChild(img);
+
+                const infoDiv = document.createElement('div');
+                infoDiv.classList.add('project-info');
+
+                const title = document.createElement('h3');
+                title.textContent = project.title;
+                infoDiv.appendChild(title);
+
+                const descriptionSnippet = document.createElement('p');
+                descriptionSnippet.textContent = project.description.split('\n')[0];
+                infoDiv.appendChild(descriptionSnippet);
+
+                projectItem.appendChild(infoDiv);
+                projectGrid.appendChild(projectItem);
+
+                projectItem.addEventListener('click', () => showProjectDetail(index));
+            });
+        }
+
+        /**
+         * Shows the detailed view of a specific project.
+         * @param {number} index - The index of the project to display.
+         */
+        function showProjectDetail(index) {
+            const project = projects[index];
+            if (!project) return;
+
+            detailProjectTitle.textContent = project.title;
+            detailProjectDescription.innerHTML = project.description.replace(/\n/g, '<br>'); // Preserve line breaks
+
+            detailProjectGallery.innerHTML = ''; // Clear previous gallery images
+            project.allDetailedPhotos.forEach(imageUrl => {
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = project.title;
+                img.onerror = function() {
+                    this.src = `https://placehold.co/800x600/E0E0E0/333333?text=Eroare+Imagine`; // Fallback image
+                };
+                detailProjectGallery.appendChild(img);
+            });
+
+            projectDetailPage.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling on main page
+            window.scrollTo(0, 0); // Scroll to top of detail page
+        }
+
+        /**
+         * Hides the detailed project view and returns to the main page.
+         */
+        function hideProjectDetail() {
+            projectDetailPage.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling on main page
+        }
+
+        // Event listeners for detail page buttons
+        backToProjectsBtn.addEventListener('click', hideProjectDetail);
+
+        // Event listeners for footer links to show policy/terms pages
+        document.querySelector('footer a[href="#privacyPolicy"]').addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllSections(); // Hide other sections
+            document.getElementById('privacyPolicy').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            window.scrollTo(0, 0);
+        });
+
+        document.querySelector('footer a[href="#termsAndConditions"]').addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllSections(); // Hide other sections
+            document.getElementById('termsAndConditions').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            window.scrollTo(0, 0);
+        });
+
+        // Function to hide policy/terms pages
+        function hidePolicyAndTerms() {
+            document.getElementById('privacyPolicy').classList.remove('active');
+            document.getElementById('termsAndConditions').classList.remove('active');
+            document.body.style.overflow = '';
+            // Return to home view
+            hideAllSections();
+            heroSection.style.display = 'block';
+            aboutSection.style.display = 'block';
+            projectsSection.style.display = 'block';
+            contactSection.style.display = 'block';
+            renderProjects(false);
+        }
+        // Attach this function to the back buttons on policy/terms pages
+        document.querySelectorAll('#privacyPolicy .back-button, #termsAndConditions .back-button').forEach(button => {
+            button.addEventListener('click', hidePolicyAndTerms);
+        });
+
+        // Initial setup on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial state: Hero, About, 3 projects, Contact
+            hideAllSections(); // Hide everything first
+            heroSection.style.display = 'block';
+            aboutSection.style.display = 'block'; // Show About section on home page
+            projectsSection.style.display = 'block';
+            contactSection.style.display = 'block';
+            renderProjects(false); // Render only first 3 projects
+
+            // Smooth scroll and section visibility for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+
+                    hideAllSections(); // Hide all sections on nav click
+
+                    if (targetId === 'about') {
+                        aboutSection.style.display = 'block';
+                    } else if (targetId === 'projects') {
+                        projectsSection.style.display = 'block';
+                        renderProjects(true); // Show all projects when "Proiecte" is clicked
+                    } else if (targetId === 'contact') {
+                        contactSection.style.display = 'block';
+                    } else { // Click on logo or unknown hash, go to home
+                        heroSection.style.display = 'block';
+                        aboutSection.style.display = 'block'; // Show About section on home page
+                        projectsSection.style.display = 'block';
+                        contactSection.style.display = 'block';
+                        renderProjects(false); // Show only first 3 projects
+                    }
+
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
